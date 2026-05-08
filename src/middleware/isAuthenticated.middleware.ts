@@ -43,7 +43,6 @@ export const isAuthenticated = async (
     }
 
     req.user = user;
-
     next();
   } catch (error) {
     if (error instanceof TokenExpiredError) {
