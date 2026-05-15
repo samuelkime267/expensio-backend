@@ -4,6 +4,7 @@ import crypto from "crypto";
 import { CustomError } from "@/types";
 import { UpdatePasswordSchemaType } from "@/schemas/auth";
 import bcrypt from "bcryptjs";
+import { hashKey } from "@/lib/encryption";
 
 export const resetPassword = async (
   req: Request,
@@ -21,7 +22,8 @@ export const resetPassword = async (
       throw error;
     }
 
-    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    const hashedToken = hashKey(token);
+
     const user = await User.findOne({
       passwordResetToken: hashedToken,
       passwordResetTokenExpiryDate: { $gt: Date.now() },
