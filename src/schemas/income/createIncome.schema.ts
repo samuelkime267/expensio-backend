@@ -1,6 +1,10 @@
 import { z } from "zod";
 
 export const createIncomeSchema = z.object({
+  name: z
+    .string("Name should be a string")
+    .min(3, "Name should be at least 3 characters long")
+    .optional(),
   amount: z.number("Amount is required"),
   date: z.coerce.date(),
   category: z.string("Category is required"),

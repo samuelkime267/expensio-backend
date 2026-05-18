@@ -5,7 +5,11 @@ const category = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  category: {
+  name: {
+    type: String,
+    required: true,
+  },
+  value: {
     type: String,
     required: true,
   },
@@ -24,6 +28,10 @@ const category = new mongoose.Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
+  },
+  isDefault: {
+    type: Boolean,
+    default: false,
   },
 });
 

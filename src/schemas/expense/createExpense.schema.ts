@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const createExpenseSchema = z.object({
+  name: z.string("Name is required"),
   amount: z.number("Amount is required"),
   date: z.coerce.date(),
   category: z.string("Category is required"),
