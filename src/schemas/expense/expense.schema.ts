@@ -6,6 +6,7 @@ export const expenseSchema = z.object({
   date: z.coerce.date(),
   category: z.string("Category is required"),
   description: z.string().optional(),
+  name: z.string("Name is required"),
 });
 
 export type ExpenseSchemaType = z.infer<typeof expenseSchema>;

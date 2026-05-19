@@ -10,7 +10,7 @@ export const createIncome = async (
 ) => {
   try {
     const user = req.user as UserDocument;
-    const { amount, category, description, date } =
+    const { amount, category, description, date, name } =
       req.body as CreateIncomeSchemaType;
 
     const income = await Income.create({
@@ -19,6 +19,7 @@ export const createIncome = async (
       date,
       category,
       description,
+      name,
     });
 
     res.status(200).json({

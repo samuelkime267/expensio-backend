@@ -10,7 +10,7 @@ export const createExpense = async (
 ) => {
   try {
     const user = req.user as UserDocument;
-    const { amount, category, description, date } =
+    const { amount, category, description, date, name } =
       req.body as CreateExpenseSchemaType;
 
     const income = await Expense.create({
@@ -19,6 +19,7 @@ export const createExpense = async (
       date,
       category,
       description,
+      name,
     });
 
     res.status(200).json({

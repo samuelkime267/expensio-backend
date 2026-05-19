@@ -23,7 +23,6 @@ export const isAuthenticated = async (
       error.statusCode = 401;
       throw error;
     }
-
     const decodedData = jwt.verify(token, JWT_SECRET);
     if (
       typeof decodedData === "string" ||

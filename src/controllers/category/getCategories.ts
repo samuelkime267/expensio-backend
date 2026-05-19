@@ -10,9 +10,43 @@ export const getCategories = async (
 ) => {
   try {
     const user = req.user as UserDocument;
+    const type = req.query.type;
+
+    if (!type) {
+      const categories = await Category.find({
+        $or: [{ user: user._id, isDefault: false }, { isDefault: true }],
+      });
+
+      if (categories.length === 0) {
+        const error = new Error("No categories found") as CustomError;
+        error.statusCode = 404;
+        throw error;
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "Categories fetched successfully",
+        data: categories,
+      });
+    }
+
+    if (typeof type !== "string") {
+      const error = new Error("Invalid type") as CustomError;
+      error.statusCode = 400;
+      throw error;
+    }
+
+    if (type !== "income" && type !== "expense") {
+      const error = new Error("Invalid type") as CustomError;
+      error.statusCode = 400;
+      throw error;
+    }
 
     const categories = await Category.find({
-      $or: [{ user: user._id, isDefault: false }, { isDefault: true }],
+      $or: [
+        { user: user._id, isDefault: false },
+        { isDefault: true, isIncome: type === "income" },
+      ],
     });
 
     if (categories.length === 0) {
