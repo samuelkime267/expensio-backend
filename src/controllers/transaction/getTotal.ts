@@ -1,6 +1,7 @@
 import Transaction from "@/models/transaction.model";
 import { UserDocument } from "@/models/user.model";
 import { CustomError } from "@/types";
+import { getDateRange } from "@/utils";
 import { NextFunction, Request, Response } from "express";
 
 export const getTotal = async (
@@ -24,30 +25,12 @@ export const getTotal = async (
     let previousStartDate: Date | null = null;
 
     // DEFAULT => ALL TIME
-    // later you can change this behavior
 
-    if (duration === "day") {
-      currentStartDate = new Date(now);
-      currentStartDate.setDate(now.getDate() - 1);
-
-      previousStartDate = new Date(now);
-      previousStartDate.setDate(now.getDate() - 2);
-    }
-
-    if (duration === "week") {
-      currentStartDate = new Date(now);
-      currentStartDate.setDate(now.getDate() - 7);
-
-      previousStartDate = new Date(now);
-      previousStartDate.setDate(now.getDate() - 14);
-    }
-
-    if (duration === "month") {
-      currentStartDate = new Date(now);
-      currentStartDate.setMonth(now.getMonth() - 1);
-
-      previousStartDate = new Date(now);
-      previousStartDate.setMonth(now.getMonth() - 2);
+    if (duration === "day" || duration === "week" || duration === "month") {
+      const { currentStartDate: cur, previousStartDate: pre } =
+        getDateRange(duration);
+      currentStartDate = cur;
+      previousStartDate = pre;
     }
 
     // CURRENT PERIOD QUERY
