@@ -8,10 +8,9 @@ import cors from "cors";
 import passport from "passport";
 import userRouter from "./routes/user.route";
 import morgan from "morgan";
-import incomeRouter from "./routes/income.route";
-import expenseRouter from "./routes/expense.route";
 import categoryRouter from "./routes/category.route";
 import "@/config/passport";
+import transactionRouter from "./routes/transaction.route";
 
 const app = express();
 
@@ -30,9 +29,8 @@ app.use(cookieParser());
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
-app.use("/api/v1/income", incomeRouter);
-app.use("/api/v1/expense", expenseRouter);
 app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/transaction", transactionRouter);
 
 app.use(errorMiddleware);
 

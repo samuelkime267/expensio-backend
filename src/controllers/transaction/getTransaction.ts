@@ -1,9 +1,9 @@
-import Expense from "@/models/expense.model";
+import Transaction from "@/models/transaction.model";
 import { UserDocument } from "@/models/user.model";
 import { CustomError } from "@/types";
 import { NextFunction, Request, Response } from "express";
 
-export const getExpense = async (
+export const getTransaction = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -18,17 +18,21 @@ export const getExpense = async (
       throw error;
     }
 
-    const income = await Expense.findOne({ _id: id, user: user._id });
-    if (!income) {
-      const error = new Error("Expense not found") as CustomError;
+    const transaction = await Transaction.findOne({
+      _id: id,
+      user: user._id,
+    });
+
+    if (!transaction) {
+      const error = new Error("Transaction not found") as CustomError;
       error.statusCode = 404;
       throw error;
     }
 
     res.status(200).json({
-      message: "Expense retrieved successfully",
+      message: "Transaction retrieved successfully",
       success: true,
-      data: income,
+      data: transaction,
     });
   } catch (error) {
     next(error);
