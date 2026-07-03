@@ -34,14 +34,16 @@ export const getTransactions = async (
     res.status(200).json({
       message: "Transactions retrieved successfully",
       success: true,
-      data: transactions,
-      // continue with this
-      pagination: {
-        currentPage,
-        nextPage: 0,
-        maxPage: 0,
-        count: itemCount,
-        totalItems: 0,
+      data: {
+        transactions,
+        // continue with this
+        pagination: {
+          currentPage,
+          nextPage: 0,
+          maxPage: 0,
+          count: itemCount,
+          totalItems: 0,
+        },
       },
     });
   } catch (error) {
