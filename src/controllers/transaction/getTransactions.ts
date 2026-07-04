@@ -1,14 +1,7 @@
 import Transaction from "@/models/transaction.model";
 import { UserDocument } from "@/models/user.model";
-import { CustomError } from "@/types";
+import { paginate } from "@/utils";
 import { NextFunction, Request, Response } from "express";
-
-/**
- * I want to include pagination and filter
- *  for pagination - current page, count, remaining page
- * for filter - type="income or expense", date- time period start time and stop time,
- *
- */
 
 export const getTransactions = async (
   req: Request,
@@ -17,33 +10,36 @@ export const getTransactions = async (
 ) => {
   try {
     const user = req.user as UserDocument;
-    const currentPage = Number(req.query.page) || 1;
-    const itemCount = Number(req.query.count) || 20;
+
     const type = req.query.type;
     const startDate = Number(req.query.startDate) || 0;
     const endDate = Number(req.query.endDate) || Date.now();
+    const count = Number(req.query.count) || 20;
+    const page = Number(req.query.page) || 1;
 
-    const transactions = await Transaction.find({
+    const filter = {
       user: user._id,
       ...(type && { type }),
-      date: { $gte: startDate, $lte: endDate },
-    })
-      .limit(itemCount)
-      .skip((currentPage - 1) * itemCount);
+      date: {
+        $gte: startDate,
+        $lte: endDate,
+      },
+    };
+
+    const { data: transactions, pagination } = await paginate({
+      model: Transaction,
+      filter,
+      page,
+      count,
+      sort: { date: -1 },
+    });
 
     res.status(200).json({
-      message: "Transactions retrieved successfully",
       success: true,
+      message: "Transactions retrieved successfully",
       data: {
         transactions,
-        // continue with this
-        pagination: {
-          currentPage,
-          nextPage: 0,
-          maxPage: 0,
-          count: itemCount,
-          totalItems: 0,
-        },
+        pagination,
       },
     });
   } catch (error) {
