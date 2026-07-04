@@ -3,7 +3,7 @@ import { connectDb } from "./config/db";
 import authRouter from "./routes/auth.route";
 import { errorMiddleware } from "./middleware/error.middleware";
 import cookieParser from "cookie-parser";
-import { PORT } from "./config/env";
+import { FRONTEND_URL, PORT } from "./config/env";
 import cors from "cors";
 import passport from "passport";
 import userRouter from "./routes/user.route";
@@ -19,7 +19,7 @@ app.use(logger);
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: `${FRONTEND_URL}`,
     credentials: true,
   }),
 );
