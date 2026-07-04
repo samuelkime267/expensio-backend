@@ -54,7 +54,7 @@ export const googleOAuthCallback = async (
                   from:"oauth",
                   success:true
                 },
-                'http://localhost:5173'
+                '${FRONTEND_URL}'
               );
               window.close();
             </script>
