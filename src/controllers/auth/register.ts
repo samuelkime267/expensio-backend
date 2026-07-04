@@ -50,7 +50,7 @@ export const register = async (
       .cookie("refreshToken", token.refreshToken, {
         httpOnly: true,
         secure: IS_PROD,
-        sameSite: IS_PROD ? "none" : "strict",
+        sameSite: IS_PROD ? "none" : "lax",
         maxAge: 30 * 24 * 60 * 60 * 1000,
         path: "/api/v1/auth",
       })

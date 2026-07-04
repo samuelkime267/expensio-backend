@@ -37,7 +37,7 @@ export const logout = async (
       .clearCookie("refreshToken", {
         httpOnly: true,
         secure: IS_PROD,
-        sameSite: IS_PROD ? "none" : "strict",
+        sameSite: IS_PROD ? "none" : "lax",
         path: "/api/v1/auth",
       })
       .status(200)

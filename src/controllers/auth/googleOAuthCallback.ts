@@ -44,8 +44,7 @@ export const googleOAuthCallback = async (
         secure: IS_PROD,
         sameSite: IS_PROD ? "none" : "lax",
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        path: "/",
-        // path: "/api/v1/auth",
+        path: "/api/v1/auth",
       }).send(`
         <html>
           <body>
