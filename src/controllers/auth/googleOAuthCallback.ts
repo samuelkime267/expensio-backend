@@ -42,7 +42,7 @@ export const googleOAuthCallback = async (
       return res.cookie("refreshToken", token.refreshToken, {
         httpOnly: true,
         secure: IS_PROD,
-        sameSite: "lax",
+        sameSite: IS_PROD ? "none" : "lax",
         maxAge: 30 * 24 * 60 * 60 * 1000,
         path: "/api/v1/auth",
       }).send(`
