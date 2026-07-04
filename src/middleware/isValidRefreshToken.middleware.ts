@@ -12,7 +12,6 @@ export const isValidRefreshToken = async (
 ) => {
   try {
     const { refreshToken } = req.cookies;
-    console.log("refresh token", refreshToken);
 
     if (!refreshToken) {
       const error = new Error("User not authenticated") as CustomError;
@@ -21,7 +20,6 @@ export const isValidRefreshToken = async (
     }
 
     const decodedData = jwt.verify(refreshToken, JWT_SECRET);
-    console.log("decoded data", decodedData);
     if (
       typeof decodedData === "string" ||
       decodedData.type !== "refresh" ||
@@ -42,15 +40,14 @@ export const isValidRefreshToken = async (
       error.statusCode = 401;
       throw error;
     }
-    console.log("id", decodedData.id);
-    console.log("decoded data", decodedData);
+
     const user = await User.findById(decodedData.id);
-    console.log("user", user);
     if (!user) {
       const error = new Error("User not authenticated") as CustomError;
       error.statusCode = 401;
       throw error;
     }
+
     if (req.user && req.user._id.toString() !== user._id.toString()) {
       const error = new Error("User not authorized") as CustomError;
       error.statusCode = 400;
