@@ -4,6 +4,7 @@ import User from "@/models/user.model";
 import { CustomError } from "@/types";
 import { generateJwtToken } from "@/utils";
 import bcrypt from "bcryptjs";
+import { IS_PROD } from "@/config/env";
 
 export const login = async (
   req: Request,
@@ -42,9 +43,8 @@ export const login = async (
     res
       .cookie("refreshToken", token.refreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        // sameSite: "strict",
-        sameSite: "none",
+        secure: IS_PROD,
+        sameSite: IS_PROD ? "none" : "strict",
         maxAge: 30 * 24 * 60 * 60 * 1000,
         path: "/api/v1/auth",
       })

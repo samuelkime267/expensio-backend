@@ -5,6 +5,7 @@ import { CustomError } from "@/types";
 import { generateJwtToken } from "@/utils";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
+import { IS_PROD } from "@/config/env";
 
 export const register = async (
   req: Request,
@@ -48,9 +49,8 @@ export const register = async (
     res
       .cookie("refreshToken", token.refreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
-        // sameSite: "strict",
+        secure: IS_PROD,
+        sameSite: IS_PROD ? "none" : "strict",
         maxAge: 30 * 24 * 60 * 60 * 1000,
         path: "/api/v1/auth",
       })

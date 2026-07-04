@@ -1,3 +1,4 @@
+import { IS_PROD } from "@/config/env";
 import Token from "@/models/token.model";
 import { CustomError } from "@/types";
 import { NextFunction, Request, Response } from "express";
@@ -35,9 +36,8 @@ export const logout = async (
     res
       .clearCookie("refreshToken", {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
-        // sameSite: "strict",
+        secure: IS_PROD,
+        sameSite: IS_PROD ? "none" : "strict",
         path: "/api/v1/auth",
       })
       .status(200)

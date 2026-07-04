@@ -1,4 +1,4 @@
-import { FRONTEND_URL, PORT } from "@/config/env";
+import { FRONTEND_URL, IS_PROD, PORT } from "@/config/env";
 import { UserDocument } from "@/models/user.model";
 import { CustomError } from "@/types";
 import { generateJwtToken } from "@/utils";
@@ -41,8 +41,7 @@ export const googleOAuthCallback = async (
       const token = generateJwtToken(user._id);
       return res.cookie("refreshToken", token.refreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        // sameSite: "none",
+        secure: IS_PROD,
         sameSite: "lax",
         maxAge: 30 * 24 * 60 * 60 * 1000,
         path: "/api/v1/auth",

@@ -23,3 +23,4 @@ export const STREAM_KEY_SECRET =
   process.env.STREAM_KEY_SECRET || "supersecret32characterslength!!";
 
 export const HASH_SECRET = process.env.HASH_SECRET || "supersecrethash";
+export const IS_PROD = process.env.NODE_ENV === "production";
