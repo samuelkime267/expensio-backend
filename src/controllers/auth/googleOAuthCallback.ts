@@ -28,7 +28,7 @@ export const googleOAuthCallback = async (
                   from:"oauth",
                   error: ${JSON.stringify(err)}
                   },
-                  'http://localhost:5173'
+                  '${FRONTEND_URL}'
                 );
                 window.close();
               </script>

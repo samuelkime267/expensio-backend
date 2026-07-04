@@ -37,7 +37,7 @@ app.use(errorMiddleware);
 connectDb(() => {
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
-    console.log(`http://localhost:${PORT}`);
-    console.log(`BASE URL: http://localhost:${PORT}/api/v1`);
+    // console.log(`http://localhost:${PORT}`);
+    // console.log(`BASE URL: http://localhost:${PORT}/api/v1`);
   });
 });
