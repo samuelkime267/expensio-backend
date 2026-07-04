@@ -24,3 +24,4 @@ export const STREAM_KEY_SECRET =
 
 export const HASH_SECRET = process.env.HASH_SECRET || "supersecrethash";
 export const IS_PROD = process.env.NODE_ENV === "production";
+export const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
