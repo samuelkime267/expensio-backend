@@ -12,6 +12,7 @@ export const isValidRefreshToken = async (
 ) => {
   try {
     const { refreshToken } = req.cookies;
+    console.log("refresh token", refreshToken);
 
     if (!refreshToken) {
       const error = new Error("User not authenticated") as CustomError;
@@ -20,6 +21,7 @@ export const isValidRefreshToken = async (
     }
 
     const decodedData = jwt.verify(refreshToken, JWT_SECRET);
+    console.log("decoded data", decodedData);
     if (
       typeof decodedData === "string" ||
       decodedData.type !== "refresh" ||
