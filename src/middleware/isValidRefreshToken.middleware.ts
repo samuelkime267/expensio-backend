@@ -40,8 +40,10 @@ export const isValidRefreshToken = async (
       error.statusCode = 401;
       throw error;
     }
-
+    console.log("id", decodedData.id);
+    console.log("decoded data", decodedData);
     const user = await User.findById(decodedData.id);
+    console.log("user", user);
     if (!user) {
       const error = new Error("User not authenticated") as CustomError;
       error.statusCode = 401;
