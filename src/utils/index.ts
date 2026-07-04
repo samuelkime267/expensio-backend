@@ -5,3 +5,4 @@ export * from "./generateOTP";
 export * from "./generateStreamKey";
 export * from "./getDateRange";
 export * from "./paginate";
+export * from "./insertDefaultCategories";
