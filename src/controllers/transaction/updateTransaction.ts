@@ -1,3 +1,4 @@
+import Category from "@/models/category.model";
 import Transaction from "@/models/transaction.model";
 import { UserDocument } from "@/models/user.model";
 import { CreateTransactionSchemaType } from "@/schemas/transaction";
@@ -27,6 +28,18 @@ export const updateTransaction = async (
       error.statusCode = 404;
       throw error;
     }
+
+    const categoryExists = await Category.findOne({
+      value: category,
+      isIncome: type === "Income",
+    });
+
+    if (!categoryExists) {
+      const error = new Error("Category not found") as CustomError;
+      error.statusCode = 404;
+      throw error;
+    }
+
     if (previousTransaction.type === "Income") {
       user.balance -= previousTransaction.amount;
       user.balance += amount;
@@ -46,7 +59,11 @@ export const updateTransaction = async (
         $set: {
           amount,
           date,
-          category,
+          category: {
+            id: categoryExists._id,
+            name: categoryExists.name,
+            value: categoryExists.value,
+          },
           description,
           type,
           updatedAt: new Date(),

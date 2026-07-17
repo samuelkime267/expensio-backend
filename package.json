@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/app.ts",
     "build": "tsc && tsc-alias",
-    "start": "node dist/app.js"
+    "start": "node dist/app.js",
+    "migrate:category": "ts-node -r tsconfig-paths/register src/scripts/migrations/categoryMigration.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

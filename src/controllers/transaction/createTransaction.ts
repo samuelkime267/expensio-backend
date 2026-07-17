@@ -1,6 +1,8 @@
+import Category from "@/models/category.model";
 import Transaction from "@/models/transaction.model";
 import { UserDocument } from "@/models/user.model";
 import { CreateTransactionSchemaType } from "@/schemas/transaction";
+import { CustomError } from "@/types";
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 
@@ -16,6 +18,17 @@ export const createTransaction = async (
     const { amount, category, description, date, name, type } =
       req.body as CreateTransactionSchemaType;
 
+    const categoryExists = await Category.findOne({
+      value: category,
+      isIncome: type === "Income",
+    });
+
+    if (!categoryExists) {
+      const error = new Error("Category not found") as CustomError;
+      error.statusCode = 404;
+      throw error;
+    }
+
     const isIncome = type === "Income";
     if (isIncome) user.balance += amount;
     if (!isIncome) user.balance -= amount;
@@ -28,7 +41,11 @@ export const createTransaction = async (
           user: user._id,
           amount,
           date,
-          category,
+          category: {
+            id: categoryExists._id,
+            name: categoryExists.name,
+            value: categoryExists.value,
+          },
           description,
           name,
           type,

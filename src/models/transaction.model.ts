@@ -23,8 +23,22 @@ const transaction = new mongoose.Schema({
     required: true,
   },
   category: {
-    type: String,
-    required: true,
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    value: {
+      type: String,
+      required: true,
+      lowercase: true,
+      trim: true,
+    },
   },
   description: {
     type: String,
