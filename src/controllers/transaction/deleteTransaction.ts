@@ -28,6 +28,7 @@ export const deleteTransaction = async (
         session,
       },
     );
+
     if (!deletedTransaction) {
       const error = new Error("Transaction not found") as CustomError;
       error.statusCode = 404;
@@ -45,8 +46,12 @@ export const deleteTransaction = async (
     res.status(200).json({
       message: "Transaction deleted successfully",
       success: true,
+      data: deletedTransaction,
     });
   } catch (error) {
+    await session.abortTransaction();
     next(error);
+  } finally {
+    await session.endSession();
   }
 };
