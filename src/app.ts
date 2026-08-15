@@ -11,6 +11,8 @@ import morgan from "morgan";
 import categoryRouter from "./routes/category.route";
 import "@/config/passport";
 import transactionRouter from "./routes/transaction.route";
+import budgetRouter from "./routes/budget.route";
+import goalRouter from "./routes/goal.route";
 
 const app = express();
 
@@ -31,6 +33,8 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/transaction", transactionRouter);
+app.use("/api/v1/budget", budgetRouter);
+app.use("/api/v1/goal", goalRouter);
 
 app.use(errorMiddleware);
 

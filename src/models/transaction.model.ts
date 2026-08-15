@@ -43,6 +43,11 @@ const transaction = new mongoose.Schema({
   description: {
     type: String,
   },
+  goalId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Goal",
+    default: null,
+  },
   breakdowns: {
     type: [
       {

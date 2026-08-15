@@ -6,6 +6,7 @@ import {
   updateTransaction,
   getTransactions,
   getCashflow,
+  getAnalytics,
 } from "@/controllers/transaction";
 import { isAuthenticated } from "@/middleware";
 import { createTransactionValidator } from "@/validators/transaction.validator";
@@ -15,6 +16,7 @@ const transactionRouter = Router();
 
 transactionRouter.get("/total", isAuthenticated, getTotal);
 transactionRouter.get("/cashflow", isAuthenticated, getCashflow);
+transactionRouter.get("/analytics", isAuthenticated, getAnalytics);
 transactionRouter.get("/", isAuthenticated, getTransactions);
 transactionRouter.post(
   "/",
