@@ -16,10 +16,20 @@ export const getTransactions = async (
     const endDate = Number(req.query.endDate) || Date.now();
     const count = Number(req.query.count) || 20;
     const page = Number(req.query.page) || 1;
+    const search = req.query.search;
+    const category = req.query.category;
+    const minAmount = Number(req.query.minAmount);
+    const maxAmount = Number(req.query.maxAmount);
+    const sort: Record<string, 1 | -1> =
+      req.query.sort === "asc" ? { date: 1 } : { date: -1 };
 
     const filter = {
       user: user._id,
       ...(type && { type }),
+      ...(search && { name: { $regex: search, $options: "i" } }),
+      ...(category && { "category.value": category }),
+      ...(minAmount && { "amount.$gte": minAmount }),
+      ...(maxAmount && { "amount.$lte": maxAmount }),
       date: {
         $gte: startDate,
         $lte: endDate,
@@ -31,7 +41,7 @@ export const getTransactions = async (
       filter,
       page,
       count,
-      sort: { date: -1 },
+      sort,
     });
 
     res.status(200).json({

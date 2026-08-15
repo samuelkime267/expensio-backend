@@ -15,7 +15,7 @@ export const updateTransaction = async (
   try {
     session.startTransaction();
     const user = req.user as UserDocument;
-    const { amount, category, description, date, type } =
+    const { amount, category, description, date, type, breakdowns } =
       req.body as CreateTransactionSchemaType;
 
     const previousTransaction = await Transaction.findOne({
@@ -40,13 +40,18 @@ export const updateTransaction = async (
       throw error;
     }
 
+    const finalAmount =
+      breakdowns && breakdowns.length > 0
+        ? breakdowns.reduce((sum, item) => sum + item.amount, 0)
+        : amount;
+
     if (previousTransaction.type === "Income") {
       user.balance -= previousTransaction.amount;
-      user.balance += amount;
+      user.balance += finalAmount;
     }
     if (previousTransaction.type === "Expense") {
       user.balance += previousTransaction.amount;
-      user.balance -= amount;
+      user.balance -= finalAmount;
     }
     await user.save({ session });
 
@@ -57,7 +62,7 @@ export const updateTransaction = async (
       },
       {
         $set: {
-          amount,
+          amount: finalAmount,
           date,
           category: {
             id: categoryExists._id,
@@ -65,6 +70,7 @@ export const updateTransaction = async (
             value: categoryExists.value,
           },
           description,
+          breakdowns,
           type,
           updatedAt: new Date(),
         },

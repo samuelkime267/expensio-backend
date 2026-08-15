@@ -15,7 +15,7 @@ export const createTransaction = async (
   try {
     session.startTransaction();
     const user = req.user as UserDocument;
-    const { amount, category, description, date, name, type } =
+    const { amount, category, description, date, name, type, breakdowns } =
       req.body as CreateTransactionSchemaType;
 
     const categoryExists = await Category.findOne({
@@ -29,9 +29,14 @@ export const createTransaction = async (
       throw error;
     }
 
+    const finalAmount =
+      breakdowns && breakdowns.length > 0
+        ? breakdowns.reduce((sum, item) => sum + item.amount, 0)
+        : amount;
+
     const isIncome = type === "Income";
-    if (isIncome) user.balance += amount;
-    if (!isIncome) user.balance -= amount;
+    if (isIncome) user.balance += finalAmount;
+    if (!isIncome) user.balance -= finalAmount;
 
     await user.save({ session });
 
@@ -39,7 +44,7 @@ export const createTransaction = async (
       [
         {
           user: user._id,
-          amount,
+          amount: finalAmount,
           date,
           category: {
             id: categoryExists._id,
@@ -49,6 +54,7 @@ export const createTransaction = async (
           description,
           name,
           type,
+          breakdowns,
         },
       ],
       { session },

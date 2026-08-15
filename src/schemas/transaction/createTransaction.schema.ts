@@ -10,9 +10,21 @@ export const createTransactionSchema = z.object({
   }),
   category: z.string("Category is required"),
   description: z.string().optional(),
+  breakdowns: z
+    .array(
+      z.object({
+        name: z.string("Name is required"),
+        amount: z.number("Amount is required").positive(),
+      }),
+    )
+    .optional(),
   type: transactionType,
 });
 
 export type CreateTransactionSchemaType = z.infer<
   typeof createTransactionSchema
 >;
+
+export type BreakdownType = NonNullable<
+  CreateTransactionSchemaType["breakdowns"]
+>[number];

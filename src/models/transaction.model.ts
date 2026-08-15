@@ -43,6 +43,22 @@ const transaction = new mongoose.Schema({
   description: {
     type: String,
   },
+  breakdowns: {
+    type: [
+      {
+        name: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        amount: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now,
